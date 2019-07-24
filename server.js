@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 
 // File imports
-const users = require('./routes/api/users');
+const users = require('./api/users');
 const keys = require('./config/keys');
 
 // Variable declaration
