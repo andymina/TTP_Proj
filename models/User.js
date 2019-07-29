@@ -6,8 +6,7 @@ const UserSchema = new mongoose.Schema({
 	password: String,
 	imgURL: String,
 	spotify_token: String,
-	friends: [String],
-	online_status: Boolean
+	friends: [String]
 });
 
 module.exports = User = mongoose.model("users", UserSchema);

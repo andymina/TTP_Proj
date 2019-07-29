@@ -40,6 +40,18 @@ export const loginUser = (userData) => (dispatch) => {
 	});
 }
 
+// Logout user
+export const logoutUser = () => (dispatch) => {
+	// Remove token from localStorage
+	localStorage.removeItem("jwtToken");
+
+	// Remove auth header
+	setAuthToken(false);
+
+	// Set current user to empty, which will set isAuthenticated to false
+	dispatch(setCurrentUser({}));
+}
+
 // Set current user
 export const setCurrentUser = (decoded) => {
 	return {
@@ -53,16 +65,4 @@ export const setUserLoading = () => {
 	return {
 		type: USER_LOADING
 	};
-}
-
-// Logout user
-export const logoutUser = () => (dispatch) => {
-	// Remove token from localStorage
-	localStorage.remove("jwtToken");
-
-	// Remove auth header
-	setAuthToken(false);
-
-	// Set current user to empty, which will set isAuthenticated to false
-	dispatch(setCurrentUser({}));
 }

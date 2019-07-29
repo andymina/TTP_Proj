@@ -8,12 +8,11 @@ const User = require('../models/User');
 const router = express.Router();
 
 router.post("/signup", (req, res) => {
-	console.log(req);
-	const { errors, isValid } = validateSignup(req.body);
+const { errors, isValid } = validateSignup(req.body);
 	if (!isValid) return res.status(400).json(errors);
 
 	User.findOne({ username: req.body.username }).then((user) => {
-		if (user) return res.status(200).json({ username: "Username taken"});
+		if (user) return res.status(200).json({ username: "Username taken" });
 	});
 
 	User.findOne({ email: req.body.email }).then((user) => {
@@ -23,9 +22,8 @@ router.post("/signup", (req, res) => {
 				username: req.body.username,
 				email: req.body.email,
 				password: req.body.password,
-				imgURL: "https://via.placeholder.com/200x200",
-				spotify_token: "",
-				online_status: true
+				imgURL: "https://via.placeholder.com/250x250",
+				spotify_token: ""
 			});
 
 			bcrypt.hash(newUser.password, 10, (err, hash) => {
@@ -38,7 +36,7 @@ router.post("/signup", (req, res) => {
 				})
 			});
 		}
-	})
+	});
 });
 
 router.post("/login", (req, res) => {
@@ -55,7 +53,11 @@ router.post("/login", (req, res) => {
 			if (isMatch){
 				const payload = {
 					id: user.id,
-					username: user.username
+					username: user.username,
+					email: user.email,
+					imgURL: user.imgURL,
+					friends: user.friends,
+					spotify_token: user.spotify_token
 				};
 
 				jwt.sign(payload, keys.SECRET_OR_KEY, { expiresIn: 604800 }, (err, token) => {

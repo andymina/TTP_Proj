@@ -2,31 +2,37 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { logoutUser } from '../actions/authActions';
+import Navbar from './Navbar';
+import Friends from './Friends';
+import Profile from './Profile';
+import Help from './Help';
 
-class Dashboard extends React.Component {
-	constructor(props){
-		super(props);
-	}
+const Dashboard = (props) => {
+	return (
+		<>
+		<Navbar children={[{title: "Dashboard", link: "/dashboard"},
+								 {title: "Profile", link: "/profile"},
+								 {title: "Log out", func: props.logoutUser}]}/>
 
-	handleLogout(event){
-		event.preventDefault();
-		this.props.logoutUser();
-	}
-
-	render(){
-		const { user } = this.props.auth;
-
-		return (
-			<h1>on the dashboard</h1>
-		);
-	}
+		<section className="bg-purple" style={{height: '92vh'}}>
+			<div className="container h-100">
+				<div className="row h-100">
+					<Friends/>
+					<Profile/>
+					<Help/>
+				</div>
+			</div>
+		</section>
+		</>
+	);
 }
 
 Dashboard.propTypes = {
-	logoutUser: PropTypes.func.isRequired,
-	auth: PropTypes.object.isRequired
+	logoutUser: PropTypes.func.isRequired
 };
 
-const mapStateToProps = (state) => ({ auth: state.auth });
+const mapStateToProps = (state) => ({
+	auth: state.auth
+});
 
 export default connect(mapStateToProps, { logoutUser })(Dashboard);

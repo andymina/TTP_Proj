@@ -36,10 +36,11 @@ class App extends React.Component {
       return (
          <Provider store={store}>
             <Router>
-               <Route exact path="/" component={screens.Login}/>
+               <Route exact path="/login" component={screens.Login}/>
                <Route exact path="/signup" component={screens.Signup}/>
 
-               <Route exact path="/dashboard" component={screens.Dashboard}/>
+               <Route exact path="/" component={screens.Dashboard}/>
+               <Route exact path="/room/:room_code" component={screens.Room}/>
             </Router>
          </Provider>
       );

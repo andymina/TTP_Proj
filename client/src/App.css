@@ -34,6 +34,29 @@
 	background-color: white;
 }
 
-.btn-purple {
-	background-color: #392F4B;
+.nav-item {
+	color: white;
+	background-color: transparent;
+}
+
+.nav-item:hover {
+	text-decoration: none;
+	color: #392F4B;
+}
+
+.dashboard-button {
+	background-color: #272727;
+	color: white;
+}
+
+.dashboard-button:hover {
+	background-color: #DB504A;
+	color: white;
+}
+
+#logout-button {
+	background-color: transparent;
+	border-color: transparent;
+	color: white;
+	height: 100%;
 }

@@ -11,8 +11,6 @@ import { loginUser } from '../actions/authActions';
 class Login extends React.Component {
 	constructor(props){
 		super(props);
-		this.handleChange = this.handleChange.bind(this);
-		this.handleSubmit = this.handleSubmit.bind(this);
 		this.state = {
 			email: '',
 			password: '',
@@ -32,12 +30,12 @@ class Login extends React.Component {
 		if (nextProps.errors) this.setState({ errors: nextProps.errors });
 	}
 
-	handleChange(event){
+	handleChange = (event) => {
 		this.setState({ [event.target.id]: event.target.value });
 		return;
 	}
 
-	handleSubmit(event){
+	handleSubmit = (event) => {
 		event.preventDefault();
 
 		const user = {
@@ -88,7 +86,7 @@ class Login extends React.Component {
 								</div>
 
 								<div className="text-center">
-									<button onClick={this.handleSubmit} className="btn btn-purple d-inline-block text-white">
+									<button onClick={this.handleSubmit} className="btn bg-purple d-inline-block text-white">
 										<span className="lead">Login</span>
 									</button>
 								</div>

@@ -2,15 +2,29 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const Navbar = (props) => {
-	let items = props.children.map((k) =>
-		<li key={k.title} className="nav-item mx-2">
-			<Link
-				to={k.link}
-				className="text-white lead">
-				{k.title}
-			</Link>
-		</li>
-	);
+	let items = props.children.map((k) => {
+		if (k.title === "Log out"){
+			return (
+				<li key={k.title} className="mx-2">
+					<span
+						onClick={k.func}
+						className="nav-item lead">
+						{k.title}
+					</span>
+				</li>
+			);
+		} else {
+			return (
+				<li key={k.title} className="mx-2">
+					<Link
+						to={k.link}
+						className="nav-item lead">
+						{k.title}
+					</Link>
+				</li>
+			);
+		}
+	});
 
 	return (
 		<nav className="navbar navbar-expand-lg bg-red">
