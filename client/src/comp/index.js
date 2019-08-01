@@ -1,7 +1,7 @@
 import Dashboard from './Dashboard';
 import Login from './Login';
 import Signup from './Signup';
-import Room from './Room';
+import Room from './room';
 
 const screens = {
 	Dashboard: Dashboard,

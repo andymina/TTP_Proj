@@ -7,27 +7,26 @@ import PropTypes from 'prop-types';
 class Profile extends React.Component {
 	constructor(props){
 		super(props);
-		this.state = {
-			code: ""
-		};
+		this.state = { code: "" };
 	}
 
 	createRoom = async () => {
-		const { data } = await axios.get("/api/rooms/create");
+		const { data } = await axios.post("/api/rooms/create", this.props.auth.user);
 		this.setState({ code: data });
 	}
 
 	joinRoom = () => {
-		// Change this from ugly prompt to beautiful modal
-		const code = prompt("Enter the room code");
-		this.setState({ code: code })
+		// Change to a beautiful modal <3
+		const answer = prompt("Enter the room code");
+
+		// Input validation
+		this.setState({ code: answer });
 	}
 
 	render(){
 		const { user } = this.props.auth;
-		const { code } = this.state;
 
-		if (code !== "") return <Redirect to={"/room/" + code}/>;
+		if (this.state.code !== "") return <Redirect to={"/room/" + this.state.code}/>;
 		else return (
 			<div className="col-lg-6 my-auto">
 				<div className="row">

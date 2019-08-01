@@ -8,7 +8,7 @@ const User = require('../models/User');
 const router = express.Router();
 
 router.post("/signup", (req, res) => {
-const { errors, isValid } = validateSignup(req.body);
+	const { errors, isValid } = validateSignup(req.body);
 	if (!isValid) return res.status(400).json(errors);
 
 	User.findOne({ username: req.body.username }).then((user) => {

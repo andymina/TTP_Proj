@@ -6,6 +6,7 @@ import { setCurrentUser, logoutUser } from './actions/authActions';
 import { Provider } from 'react-redux';
 import store from './store';
 import screens from './comp';
+import PrivateRoute from './comp/PrivateRoute';
 import './App.css';
 
 // Verify token to keep user logged in
@@ -36,11 +37,12 @@ class App extends React.Component {
       return (
          <Provider store={store}>
             <Router>
+               <Route exact path="/" component={screens.Login}/>
                <Route exact path="/login" component={screens.Login}/>
                <Route exact path="/signup" component={screens.Signup}/>
 
-               <Route exact path="/" component={screens.Dashboard}/>
-               <Route exact path="/room/:room_code" component={screens.Room}/>
+               <PrivateRoute exact path="/dashboard" component={screens.Dashboard}/>
+               <PrivateRoute exact path="/room/:room_code" component={screens.Room}/>
             </Router>
          </Provider>
       );

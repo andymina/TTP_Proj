@@ -25,7 +25,6 @@ const Navbar = (props) => {
 			);
 		}
 	});
-
 	return (
 		<nav className="navbar navbar-expand-lg bg-red">
 			<div className="container">

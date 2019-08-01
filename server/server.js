@@ -7,8 +7,7 @@ const passport = require('passport');
 
 // File imports
 const keys = require('./config/keys');
-const api = require('./api')
-
+const api = require('./api');
 
 // Variable declaration
 const app = express();
