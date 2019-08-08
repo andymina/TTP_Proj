@@ -4,10 +4,11 @@ import { connect } from 'react-redux';
 import { logoutUser } from '../actions/authActions';
 import Navbar from './Navbar';
 import Friends from './Friends';
-import Profile from './Profile';
+import Welcome from './Welcome';
 import Help from './Help';
 
 const Dashboard = (props) => {
+	window.user = props.auth.user;
 	return (
 		<>
 		<Navbar children={[{title: "Dashboard", link: "/dashboard"},
@@ -15,10 +16,10 @@ const Dashboard = (props) => {
 								 {title: "Log out", func: props.logoutUser}]}/>
 
 		<section className="bg-purple" style={{height: '92vh'}}>
-			<div className="container h-100">
+			<div className="container-fluid h-100">
 				<div className="row h-100">
 					<Friends/>
-					<Profile/>
+					<Welcome/>
 					<Help/>
 				</div>
 			</div>

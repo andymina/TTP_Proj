@@ -1,0 +1,36 @@
+.queue-container {
+	height: 100%;
+}
+
+.tracks-container {
+	max-height: 95%;
+	overflow-y: auto;
+}
+
+.user-container {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+}
+
+.song-container {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items: center;
+	color: #DB504A;
+}
+
+.song-container:hover {
+	background-color: #DB504A;
+	color: #392F4B;
+}
+
+.info-container {
+	overflow: hidden;
+}
+
+.info {
+	font-size: 1.25em;
+}

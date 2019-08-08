@@ -5,7 +5,9 @@ const UserSchema = new mongoose.Schema({
 	email: String,
 	password: String,
 	imgURL: String,
-	spotify_token: String,
+	spotify_access_token: String,
+	spotify_refresh_token: String,
+	spotify_exp: Number,
 	friends: [String]
 });
 

@@ -5,18 +5,26 @@ import RoomCode from './RoomCode';
 import Queue from './Queue';
 import Player from './Player';
 import ButtonGroup from './ButtonGroup';
+import CurrentListeners from './CurrentListeners';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { logoutUser } from '../../actions/authActions';
 import axios from 'axios';
 import io from 'socket.io-client';
+import './Room.css';
+
+// Change this.state.endpoint depending on WiFi
+// HunterNet: 146.95.36.13:5000
+// Home: 192.168.1.40:5000
 
 class Room extends React.Component {
 	constructor(props){
 		super(props);
 		this.state = {
 			socket: null,
-			loading: true
+			loading: true,
+			endpoint: '192.168.1.40:5000',
+			is_playing: false
 		};
 	}
 
@@ -26,24 +34,35 @@ class Room extends React.Component {
 
 	handleJoin = async () => {
 		const { room_code } = this.props.match.params;
-		const { user } = this.props.auth;
 
 		// Make request to the server to validate the room
 		const url = "/api/rooms/join/" + room_code;
-		const { data } = await axios.post(url, { room_code: room_code });
+		const { data } = await axios.post(url, { room_code });
 		const { isValid, error } = data;
 
 		if (isValid){
 			// Join the room
-			const socket = io('146.95.36.13:5000');
-			socket.emit('join-room', room_code, user);
-			socket.on('join-room-response', (room) => {
-				this.setState({ socket: socket, loading: false, ...room });
+			const socket = io(this.state.endpoint);
+			socket.emit('join-room', this.props.user, room_code);
+
+			socket.on('room-update', (room) => {
+				this.setState({
+					socket: socket,
+					loading: false,
+					users: room.current_users,
+					room_code: room.room_code,
+					master: room.master
+				});
 			});
 		} else {
 			// Spit error
+			console.log(error);
 			this.setState({ loading: false });
 		}
+	}
+
+	componentWillUnmount(){
+		this.state.socket.disconnect();
 	}
 
 	render(){
@@ -56,32 +75,23 @@ class Room extends React.Component {
 									 {title: "Log out", func: this.props.logoutUser}]}/>
 
 			<section className="bg-purple" style={{height: '92vh'}}>
-				<div className="container">
-					<div className="row">
+				<div className="container-fluid py-3 h-100">
+					<div className="row h-100">
+						<Queue
+							user={this.props.user}
+							room_code={this.state.room_code}
+							socket={this.state.socket}/>
+
 						<div className="col-lg-4">
-							<Queue/>
+							<RoomCode code={this.state.room_code}/>
+
+							<Player/>
+
+							<ButtonGroup/>
 						</div>
 
 						<div className="col-lg-4">
-							<div className="row">
-								<div className="col-lg-12">
-									<RoomCode code={this.state.room_code}/>
-								</div>
-
-								<div className="col-lg-12">
-									<Player/>
-								</div>
-
-								<div className="col-lg-12">
-									<ButtonGroup/>
-								</div>
-							</div>
-						</div>
-
-						<div className="col-lg-4">
-							<div className="col-lg-12">
-								<h1 className="lead text-center heading">current listeners</h1>
-							</div>
+								<CurrentListeners users={this.state.users} master={this.state.master.username}/>
 
 							<div className="col-lg-12">
 								<h1 className="lead text-center heading">chat for later?</h1>
@@ -97,12 +107,9 @@ class Room extends React.Component {
 }
 
 Room.propTypes = {
-	auth: PropTypes.object.isRequired,
+	user: PropTypes.object.isRequired,
 	logoutUser: PropTypes.func.isRequired
 };
 
-const mapStateToProps = (state) => ({
-	auth: state.auth
-});
-
+const mapStateToProps = (state) => ({ user: state.auth.user });
 export default connect(mapStateToProps, { logoutUser })(Room);

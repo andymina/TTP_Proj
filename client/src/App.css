@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Fira+Code&display=swap');
+
 .text-purple {
 	color: #392F4B;
 }
@@ -24,14 +26,14 @@
 	padding: 1%;
 }
 
-.form-control, .form-control:focus {
-	background-color: #392F4B;
-	border: 0;
-}
-
 .divider {
 	width: 25%;
 	background-color: white;
+}
+
+.custom-form-control, .custom-form-control:focus {
+	background-color: #392F4B;
+	border: 0;
 }
 
 .nav-item {
@@ -54,16 +56,28 @@
 	color: white;
 }
 
+.loading {
+  animation: spin infinite 5s linear;
+  height: 50vh;
+}
+
+.room-code {
+	font-family: 'Fira Code', monospace;
+}
+
+.add-button {
+	color: #DB504A;
+}
+
+.add-button:hover {
+	text-shadow: 1px 1px gray;
+}
+
 #logout-button {
 	background-color: transparent;
 	border-color: transparent;
 	color: white;
 	height: 100%;
-}
-
-.loading {
-  animation: spin infinite 5s linear;
-  height: 50vh;
 }
 
 @keyframes spin {

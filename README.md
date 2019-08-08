@@ -11,13 +11,8 @@ Open the terminal and follow these steps:
 
 # To-Do List
 - Forgot password
-- Socket.io and Rooms
-- Help section and children pages
 - Email verification
-- Edit profile
--- Username
--- Password
--- Profile pic
--- Email address
--- Reconnect to Spotify API
-- Works with YouTube links in the future???
+- Emit events to the room to make sure everyone is up to date and in sync
+- Set up the master device
+- Play songs from the global playlist
+- Error handling/logging **everywhere**

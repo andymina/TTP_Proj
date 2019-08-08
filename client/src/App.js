@@ -41,7 +41,9 @@ class App extends React.Component {
                <Route exact path="/login" component={screens.Login}/>
                <Route exact path="/signup" component={screens.Signup}/>
 
+               <PrivateRoute exact path="/temp" component={screens.Temp}/>
                <PrivateRoute exact path="/dashboard" component={screens.Dashboard}/>
+               <PrivateRoute exact path="/spotify" component={screens.Spotify}/>
                <PrivateRoute exact path="/room/:room_code" component={screens.Room}/>
             </Router>
          </Provider>

@@ -69,7 +69,7 @@ class Login extends React.Component {
 										onChange={this.handleChange}
 										id="email"
 										type="email"
-										className="form-control text-white"
+										className="form-control text-white bg-purple custom-form-control"
 										aria-describedby="emailHelp"/>
 									{errors.email ? <span className="text-purple lead">{errors.email}</span> : null}
 								</div>
@@ -81,7 +81,7 @@ class Login extends React.Component {
 										onChange={this.handleChange}
 										id="password"
 										type="text"
-										className="form-control text-white"/>
+										className="form-control text-white bg-purple custom-form-control"/>
 									{errors.password ? <span className="text-purple lead">{errors.password}</span> : null}
 								</div>
 

@@ -38,8 +38,8 @@ class Signup extends React.Component {
 		event.preventDefault();
 
 		const user = {
-			username: this.state.username,
-			email: this.state.email,
+			username: this.state.username.toLowerCase(),
+			email: this.state.email.toLowerCase(),
 			password: this.state.password,
 			password2: this.state.password2
 		};
@@ -69,7 +69,7 @@ class Signup extends React.Component {
 										value={this.state.username}
 										onChange={this.handleChange}
 										id="username"
-										className="form-control text-white"
+										className="form-control text-white bg-purple custom-form-control"
 										aria-describedby="emailHelp"/>
 									{errors.username ? <span className="text-purple lead">{errors.username}</span> : null}
 								</div>
@@ -81,7 +81,7 @@ class Signup extends React.Component {
 										onChange={this.handleChange}
 										id="email"
 										type="email"
-										className="form-control text-white"
+										className="form-control text-white bg-purple custom-form-control"
 										aria-describedby="emailHelp"/>
 									{errors.email ? <span className="text-purple lead">{errors.email}</span> : null}
 								</div>
@@ -93,7 +93,7 @@ class Signup extends React.Component {
 										onChange={this.handleChange}
 										id="password"
 										type="text"
-										className="form-control text-white"/>
+										className="form-control text-white bg-purple custom-form-control"/>
 									{errors.password ? <span className="text-purple lead">{errors.password}</span> : null}
 								</div>
 
@@ -104,7 +104,7 @@ class Signup extends React.Component {
 										onChange={this.handleChange}
 										id="password2"
 										type="text"
-										className="form-control text-white"/>
+										className="form-control text-white bg-purple custom-form-control"/>
 									{errors.password2 ? <span className="text-purple lead">{errors.password2}</span> : null}
 								</div>
 

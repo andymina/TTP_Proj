@@ -52,6 +52,15 @@ export const logoutUser = () => (dispatch) => {
 	dispatch(setCurrentUser({}));
 }
 
+// Update the current user information
+export const updateUser = (updated_user) => (dispatch) => {
+	axios.put('/api/users/update', updated_user).catch((err) => {
+		console.log("err:", err);
+	});
+
+	dispatch(setCurrentUser(updated_user));
+}
+
 // Set current user
 export const setCurrentUser = (decoded) => {
 	return {

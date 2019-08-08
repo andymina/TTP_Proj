@@ -4,14 +4,15 @@ import { connect } from 'react-redux';
 import { Link, Redirect, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-class Profile extends React.Component {
+class Welcome extends React.Component {
 	constructor(props){
 		super(props);
 		this.state = { code: "" };
 	}
 
 	createRoom = async () => {
-		const { data } = await axios.post("/api/rooms/create", this.props.auth.user);
+		const { data } = await axios.post("/api/rooms/create", this.props.user);
+		console.log(data);
 		this.setState({ code: data });
 	}
 
@@ -23,8 +24,13 @@ class Profile extends React.Component {
 		this.setState({ code: answer });
 	}
 
+	handleConnect = async () => {
+		const { data } = await axios.post("/api/spotify/connect");
+		window.location.href = data;
+	}
+
 	render(){
-		const { user } = this.props.auth;
+		const user = this.props.user;
 
 		if (this.state.code !== "") return <Redirect to={"/room/" + this.state.code}/>;
 		else return (
@@ -47,18 +53,7 @@ class Profile extends React.Component {
 					</div>
 
 					<div className="col-lg-4 mx-auto text-center">
-						<Link
-							to="/profile"
-							className="btn dashboard-button d-inline-block">
-							Edit Profile
-						</Link>
-					</div>
-				</div>
-
-
-				<div className="row">
-					<div className="col-lg-12 text-center">
-						<p>notifs</p>
+						<button className="btn dashboard-button d-inline-block" onClick={this.handleConnect}>Connect to Spotify</button>
 					</div>
 				</div>
 			</div>
@@ -66,12 +61,12 @@ class Profile extends React.Component {
 	}
 }
 
-Profile.propTypes = {
-	auth: PropTypes.object.isRequired
+Welcome.propTypes = {
+	user: PropTypes.object.isRequired
 };
 
 const mapStateToProps = (state) => ({
-	auth: state.auth
+	user: state.auth.user
 });
 
-export default withRouter(connect(mapStateToProps)(Profile));
+export default withRouter(connect(mapStateToProps)(Welcome));
