@@ -8,7 +8,6 @@ import Welcome from './Welcome';
 import Help from './Help';
 
 const Dashboard = (props) => {
-	window.user = props.auth.user;
 	return (
 		<>
 		<Navbar children={[{title: "Dashboard", link: "/dashboard"},

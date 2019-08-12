@@ -5,15 +5,15 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const passport = require('passport');
+const app = express();
 
 // File imports
 const keys = require('./config');
-const RoomHandler = require('./RoomHandler');
+const RoomHandler = require('./classes/RoomHandler');
 const roomHandler = new RoomHandler();
 module.exports = roomHandler;
 
-// Variable declaration
-const app = express();
+// Middleware
 app.use(cors());
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: false }));

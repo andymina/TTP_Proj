@@ -31,7 +31,7 @@ const parseTracks = (items) => {
    }
 
    return res;
-}
+};
 
 // Returns a URL to Spotify where the user
 // can login to connect their account
@@ -42,7 +42,7 @@ router.post("/connect", (req, res) => {
 	res.cookie(keys.SPOTIFY_STATE_KEY, state);
 
 	// Define necessary params and scope for the Spotify API
-	const scope = 'user-read-currently-playing user-library-read user-modify-playback-state streaming user-read-private';
+	const scope = 'user-modify-playback-state';
 	const url = "https://accounts.spotify.com/authorize?";
 	const params = querystring.stringify({
 		response_type: 'code',
@@ -150,6 +150,24 @@ router.post("/refresh", (req, res) => {
       console.log(err);
       return res.status(500).json({ err });
    });
-})
+});
+
+router.put("/play", (req, res) => {
+   const { uri, master } = req.body;
+   const url = "https://api.spotify.com/v1/me/player/play";
+   const params = { uris: [uri] };
+   const header = {
+      headers: {
+         'Authorization': 'Bearer ' + master.spotify_access_token
+      }
+   };
+
+   axios.put(url, params, header).then((response) => {
+      return res.status(200);
+   }).catch((err) => {
+      console.log(err);
+      return res.status(500).json({ err });
+   });
+});
 
 module.exports = router;

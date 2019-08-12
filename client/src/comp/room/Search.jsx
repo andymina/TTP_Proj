@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Song from './Song';
 import { connect } from 'react-redux';
 import { updateUser } from '../../actions/authActions';
+import { updateQueue } from '../../actions/roomActions';
 import axios from 'axios';
-import Song from './Song';
 
-class Queue extends React.Component {
+class Search extends React.Component {
 	constructor(props){
 		super(props);
 		this.state = {
@@ -20,6 +21,7 @@ class Queue extends React.Component {
 
 	handleSubmit = (event) => {
 		event.preventDefault();
+
 		if (this.state.search_field !== ""){
 			// Check if the user's token needs to be refreshed
 			const current = Math.floor(Date.now() / 1000);
@@ -80,8 +82,8 @@ class Queue extends React.Component {
 	handleQueue = (song) => {
 		song.queued_by = this.props.user.username;
 		this.props.socket.emit('queue-song', this.props.room_code, song);
-		this.props.socket.on('queue-success', () => {
-			alert('added!');
+		this.props.socket.on('queue-success', (queue) => {
+			this.props.updateQueue(queue);
 		});
 	}
 
@@ -110,9 +112,15 @@ class Queue extends React.Component {
 	}
 }
 
-Queue.propTypes = {
+Search.propTypes = {
 	updateUser: PropTypes.func.isRequired,
-	user: PropTypes.object.isRequired
+	user: PropTypes.object.isRequired,
+	room_code: PropTypes.string.isRequired,
+	queue: PropTypes.array.isRequired
 };
-const mapStateToProps = (state) => ({ user: state.auth.user });
-export default connect(mapStateToProps, { updateUser })(Queue);
+const mapStateToProps = (state) => ({
+	user: state.auth.user,
+	room_code: state.room.room_code,
+	queue: state.room.queue
+});
+export default connect(mapStateToProps, { updateUser, updateQueue })(Search);

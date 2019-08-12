@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import { Link, Redirect, withRouter } from 'react-router-dom';
+import { Redirect, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 class Welcome extends React.Component {
@@ -12,7 +12,6 @@ class Welcome extends React.Component {
 
 	createRoom = async () => {
 		const { data } = await axios.post("/api/rooms/create", this.props.user);
-		console.log(data);
 		this.setState({ code: data });
 	}
 
@@ -61,12 +60,6 @@ class Welcome extends React.Component {
 	}
 }
 
-Welcome.propTypes = {
-	user: PropTypes.object.isRequired
-};
-
-const mapStateToProps = (state) => ({
-	user: state.auth.user
-});
-
+Welcome.propTypes = { user: PropTypes.object.isRequired };
+const mapStateToProps = (state) => ({ user: state.auth.user });
 export default withRouter(connect(mapStateToProps)(Welcome));

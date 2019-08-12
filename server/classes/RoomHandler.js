@@ -1,4 +1,4 @@
-const Room = require('./classes/Room');
+const Room = require('./Room');
 class RoomHandler {
 	constructor() {
 		this.active_rooms = [];

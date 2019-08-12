@@ -5,19 +5,34 @@ module.exports = (io) => {
 	io.on('connection', (socket) => {
 		console.log(`${socket.id} has made a connection to the server`);
 
-		socket.on('join-room', (user, room_code) => {
+		socket.on('join-room', async (user, room_code) => {
 			let room = roomHandler.getRoom(room_code);
-			// Check if the room exists
+
 			if (room == false){
 				// error handling
 				console.log(`Room ${room_code} DNE`);
+				socket.emit('join-error');
 			} else {
-				if (room.join(user)){
+				let result = await room.join(user);
+
+				if (result) {
+					// Join the sokcet room
 					socket.join(room_code);
+
+					// Assign the socket a user
+					// obj and a room code for later
 					socket.room_code = room_code;
 					socket.user = user;
+
 					console.log(`${socket.user.username} has joined room ${socket.room_code}`);
-					socket.emit('join-success', room);
+
+					// Let the client know it has
+					// to update its current user obj
+					socket.emit('join-success', user);
+
+					// Emit the new room obj to
+					// all sockets in the room
+					io.in(room_code).emit('update-room', room);
 				} else {
 					socket.emit('join-error');
 				}
@@ -26,15 +41,28 @@ module.exports = (io) => {
 
 		socket.on('queue-song', (room_code, song) => {
 			let room = roomHandler.getRoom(room_code);
-			room.enqueue(song);
-			socket.emit('queue-success');
+
+			if (room.queue.length === 0 && !room.is_playing){
+				io.in(room_code).emit('play-song', song);
+				room.is_playing = true;
+				room.song = song;
+			} else {
+				room.enqueue(song);
+				io.in(room_code).emit('queue-success', room.queue);
+			}
+		});
+
+		socket.on('next-song', (room_code) => {
+			let room = roomHandler.getRoom(room_code);
+			let song = room.dequeue();
+			io.in(room_code).emit('play-song', song);
 		});
 
 		socket.on('disconnect', () => {
 			let room = roomHandler.getRoom(socket.room_code);
 			room.leave(socket.user);
 			socket.leave(socket.room_code);
-			console.log(`${socket.user.username} has left room ${socket.room_code}`);
+			socket.to(socket.room_code).emit('room-update');
 
 			if (room.current_users.length == 0) roomHandler.destroy(socket.room_code);
 		});

@@ -1,5 +1,6 @@
 import React from 'react';
 import User from './User';
+import { connect } from 'react-redux';
 
 const CurrentListeners = (props) => {
 	const users = props.users.map((element) => {
@@ -16,4 +17,5 @@ const CurrentListeners = (props) => {
 	);
 };
 
-export default CurrentListeners;
+const mapStateToProps = (state) => ({ users: state.room.current_users });
+export default connect(mapStateToProps)(CurrentListeners);
