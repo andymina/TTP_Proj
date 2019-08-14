@@ -3,7 +3,8 @@ import Navbar from '../Navbar';
 import Loading from './Loading';
 import RoomCode from './RoomCode';
 import Search from './Search';
-import Player from './Player';
+import Queue from './Queue';
+import Song from './Song';
 import ButtonGroup from './ButtonGroup';
 import CurrentListeners from './CurrentListeners';
 import PropTypes from 'prop-types';
@@ -26,7 +27,7 @@ class Room extends React.Component {
 
 	handleJoin = async () => {
 		// Change IP with WiFi
-		const socket = io("146.95.38.175:5000");
+		const socket = io("192.168.1.40:5000");
 		const { room_code } = this.props.match.params;
 
 		socket.emit('join-room', this.props.user, room_code);
@@ -50,6 +51,15 @@ class Room extends React.Component {
 			this.props.updateRoom(room);
 		});
 
+		let temp = {
+			title: "Buttercup",
+			artist: "Jack Stauber",
+			album: "Pop Food",
+			length: 2039402,
+			album_pic_url: "https://via.placeholder.com/250x250",
+			uri: "some.uri"
+		};
+
 		return (
 			<>
 			<Navbar children={[{title: "Dashboard", link: "/dashboard"},
@@ -63,15 +73,11 @@ class Room extends React.Component {
 
 						<div className="col-lg-4 h-100">
 								<RoomCode/>
-								<Player socket={this.state.socket}/>
+								<Song data={temp}/>
 						</div>
 
 						<div className="col-lg-4">
 								<CurrentListeners/>
-
-							<div className="col-lg-12">
-								<h1 className="lead text-center heading">queue for later?</h1>
-							</div>
 						</div>
 					</div>
 				</div>

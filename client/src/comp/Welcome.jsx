@@ -38,6 +38,8 @@ class Welcome extends React.Component {
 					<div className="col-lg-12">
 						<img
 							src={user.imgURL}
+							width={250}
+							height={250}
 							className="rounded d-block mx-auto my-3"
 							alt="Profile"/>
 						<h1 className="heading text-center my-3 lead text-red">Welcome, {user.username}!</h1>

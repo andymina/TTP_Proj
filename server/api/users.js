@@ -22,8 +22,7 @@ router.post("/signup", (req, res) => {
 				username: req.body.username,
 				email: req.body.email,
 				password: req.body.password,
-				imgURL: "https://via.placeholder.com/250x250",
-				spotify_token: ""
+				imgURL: "https://via.placeholder.com/250x250"
 			});
 
 			bcrypt.hash(newUser.password, 10, (err, hash) => {
@@ -63,7 +62,8 @@ router.post("/login", (req, res) => {
 
 router.put("/update", (req, res) => {
 	const updated_user = req.body;
-	User.updateOne({ id: updated_user.id }, updated_user).then(() => {
+
+	User.updateOne({ _id: updated_user._id }, updated_user).then(() => {
 		return res.status(200).json(true);
 	});
 });

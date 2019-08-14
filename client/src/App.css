@@ -73,6 +73,10 @@
 	text-shadow: 1px 1px gray;
 }
 
+.current-listeners-container {
+	height: 50vh;
+}
+
 #logout-button {
 	background-color: transparent;
 	border-color: transparent;

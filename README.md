@@ -9,10 +9,12 @@ Open the terminal and follow these steps:
 2) Run `npm run server`
 3) Open a new terminal session and run `npm run client`
 
+# Urgent To-Do List
+- Update the room to include a CurrentSong component
+- Update the room to include the queue of songs underneath the user
+- Play the song...
+- Error handling/logging **everywhere**
+
 # To-Do List
 - Forgot password
 - Email verification
-- Emit events to the room to make sure everyone is up to date and in sync
-- Set up the master device
-- Play songs from the global playlist
-- Error handling/logging **everywhere**

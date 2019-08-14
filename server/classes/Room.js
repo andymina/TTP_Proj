@@ -11,7 +11,38 @@ class Room {
 		this.queue = [];
 		this.current_users = [];
 		this.song = {};
+		this.playlist = {};
+		this.master = {};
 		this.max = 4;
+		this.is_playing = false;
+	}
+
+	initMaster(user){
+		this.master = user;
+
+		const url = `https://api.spotify.com/v1/users/${this.master.spotify_id}/playlists`;
+		const params = {
+			name: this.room_code,
+			public: false,
+			collaborative: true,
+			description: "Room created by MusiqU"
+		};
+		const header = {
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization': 'Bearer ' + this.master.spotify_access_token
+			}
+		};
+
+		axios.post(url, params, header).then((response) => {
+			this.playlist.owner = this.master;
+			this.playlist.id = response.data.id;
+			this.playlist.uri = response.data.uri;
+			// Playlist object
+			console.log(response.data);
+		}).catch((err) => {
+			console.log(err);
+		});
 	}
 
 	// Handle user join
@@ -37,7 +68,7 @@ class Room {
 			user.spotify_exp = Math.floor(Date.now() / 1000);
 			user.spotify_access_token = data.access_token;
 
-			if (this.current_users.length == 0) this.master = user;
+			if (this.current_users.length == 0) await this.initMaster(user);
 			this.current_users.push(user);
 
 			return true;
@@ -54,13 +85,61 @@ class Room {
 	}
 
 	// Handle enqueue
-	enqueue(track){
-		this.queue.push(track);
+	enqueue(user, song){
+		const url = `https://api.spotify.com/v1/playlists/${this.playlist.id}/tracks`;
+		const params = {
+			uris: [song.uri]
+		};
+		const header = {
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization': 'Bearer ' + user.spotify_access_token
+			}
+		};
+
+		axios.post(url, params, header).then(() => {
+			this.queue.push(song)
+		}).catch((err) => {
+			console.log(err);
+		});
 	}
 
 	// Handle dequeue
 	dequeue(){
 		return this.queue.shift();
+	}
+
+	async play(song){
+		const url = "https://api.spotify.com/v1/me/player/play";
+		const params = { context_uri: this.playlist.uri };
+		const header = {
+			headers: {
+				'Authorization': 'Bearer ' + this.master.spotify_access_token
+			}
+		};
+
+		try {
+			await axios.put(url, params, header);
+			this.is_playing = true;
+			this.song = song;
+			return true;
+		} catch(err) {
+			console.log(err);
+			return false;
+		}
+	}
+
+	unfollowPlaylist(){
+		const url = `https://api.spotify.com/v1/playlists/${this.playlist.id}/followers`;
+		const header = {
+			headers: {
+				'Authorization': 'Bearer ' + this.playlist.owner.spotify_access_token
+			}
+		};
+
+		axios.delete(url, header).catch((err) => {
+			console.log(err);
+		});
 	}
 
 	// Functions to implement

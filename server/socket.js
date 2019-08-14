@@ -39,31 +39,21 @@ module.exports = (io) => {
 			}
 		});
 
-		socket.on('queue-song', (room_code, song) => {
-			let room = roomHandler.getRoom(room_code);
-
-			if (room.queue.length === 0 && !room.is_playing){
-				io.in(room_code).emit('play-song', song);
-				room.is_playing = true;
-				room.song = song;
-			} else {
-				room.enqueue(song);
-				io.in(room_code).emit('queue-success', room.queue);
-			}
-		});
-
-		socket.on('next-song', (room_code) => {
-			let room = roomHandler.getRoom(room_code);
-			let song = room.dequeue();
-			io.in(room_code).emit('play-song', song);
+		socket.on('queue-song', async (song) => {
+			let room = roomHandler.getRoom(socket.room_code);
+			room.enqueue(socket.user, song);
+			socket.emit('queue-success', room.queue);
 		});
 
 		socket.on('disconnect', () => {
 			let room = roomHandler.getRoom(socket.room_code);
 			room.leave(socket.user);
 			socket.leave(socket.room_code);
+
+			console.log(`${socket.user.username} has left room ${socket.room_code}`)
 			socket.to(socket.room_code).emit('room-update');
 
+			console.log(`Destroy room ${socket.room_code}`);
 			if (room.current_users.length == 0) roomHandler.destroy(socket.room_code);
 		});
 	});

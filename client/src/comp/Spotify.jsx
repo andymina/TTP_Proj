@@ -27,13 +27,7 @@ class Spotify extends React.Component {
 		};
 
 		const { data } = await axios.post('/api/spotify/callback', req);
-		const updated_user = {
-			...user,
-			spotify_access_token: data.access_token,
-			spotify_refresh_token: data.refresh_token,
-			spotify_exp: data.spotify_exp
-		};
-
+		const { updated_user } = data;
 		this.props.updateUser(updated_user);
 		this.setState({ loading: false });
 	}

@@ -3,9 +3,11 @@ import { UPDATE_ROOM, UPDATE_SONG, UPDATE_MASTER, UPDATE_QUEUE, QUEUE_SONG } fro
 const initialState = {
 	song: {},
 	master: {},
-	room_code: "",
+	playlist: {},
 	current_users: [],
-	queue: []
+	queue: [],
+	room_code: "",
+	is_playing: false,
 };
 
 export default function(state = initialState, action) {

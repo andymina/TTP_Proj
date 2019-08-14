@@ -2,12 +2,12 @@ import React from 'react';
 import Marquee from 'react-marquee';
 import './Room.css';
 
-const Song = (props) => (
-	<div className="col-lg-12 song-container py-2 px-1">
+const SearchResult = (props) => (
+	<div className="col-lg-12 song-container py-2 px-1" onClick={() => props.handleQueue(props.data)}>
 		<img
 			src={props.data.album_pic_url}
-			width={75}
-			height={75}
+			width={100}
+			height={100}
 			className="container-img rounded img mx-2"
 			alt="Album"/>
 
@@ -22,4 +22,4 @@ const Song = (props) => (
 	</div>
 );
 
-export default Song;
+export default SearchResult;

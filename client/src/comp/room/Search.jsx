@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Song from './Song';
+import SearchResult from './SearchResult';
 import { connect } from 'react-redux';
 import { updateUser } from '../../actions/authActions';
 import { updateQueue } from '../../actions/roomActions';
@@ -13,6 +13,12 @@ class Search extends React.Component {
 			search_field: '',
 			tracks: []
 		};
+	}
+
+	componentDidMount(){
+		this.props.socket.on('queue-success', (queue) => {
+			this.props.updateQueue(queue);
+		});
 	}
 
 	handleChange = (event) => {
@@ -42,12 +48,10 @@ class Search extends React.Component {
 
 						// Refine the array of tracks to be rendered
 						let updated = tracks.map((element) =>
-							<Song
+							<SearchResult
 								key={element.uri}
 								data={element}
-								handleQueue={this.handleQueue}
-								width={100}
-								height={100}/>
+								handleQueue={this.handleQueue}/>
 						);
 						this.setState({ tracks: updated });
 					});
@@ -62,12 +66,10 @@ class Search extends React.Component {
 
 					// Refine the array of tracks to be rendered
 					let updated = tracks.map((element) =>
-						<Song
+						<SearchResult
 							key={element.uri}
 							data={element}
-							handleQueue={this.handleQueue}
-							width={100}
-							height={100}/>
+							handleQueue={this.handleQueue}/>
 					);
 					this.setState({ tracks: updated });
 				}).catch((err) => {
@@ -81,10 +83,7 @@ class Search extends React.Component {
 
 	handleQueue = (song) => {
 		song.queued_by = this.props.user.username;
-		this.props.socket.emit('queue-song', this.props.room_code, song);
-		this.props.socket.on('queue-success', (queue) => {
-			this.props.updateQueue(queue);
-		});
+		this.props.socket.emit('queue-song', song);
 	}
 
 	render(){

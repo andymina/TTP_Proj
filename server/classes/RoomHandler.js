@@ -42,6 +42,8 @@ class RoomHandler {
 	};
 
 	destroy = (room_code) => {
+		let room = this.getRoom(room_code);
+		room.unfollowPlaylist();
 		this.active_rooms = this.active_rooms.filter((element) => element.room_code !== room_code);
 	}
 }
