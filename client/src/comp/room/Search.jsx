@@ -88,7 +88,7 @@ class Search extends React.Component {
 
 	render(){
 		return (
-			<div className="col-lg-4 queue-container h-100">
+			<>
 				<form onSubmit={this.handleSubmit}>
 					<input
 						value={this.state.search_field}
@@ -106,7 +106,7 @@ class Search extends React.Component {
 				<div className="tracks-container my-1">
 					{this.state.tracks}
 				</div>
-			</div>
+			</>
 		);
 	}
 }

@@ -4,7 +4,7 @@ import Loading from './Loading';
 import RoomCode from './RoomCode';
 import Search from './Search';
 import Queue from './Queue';
-import Song from './Song';
+import Player from './Player';
 import ButtonGroup from './ButtonGroup';
 import CurrentListeners from './CurrentListeners';
 import PropTypes from 'prop-types';
@@ -67,22 +67,21 @@ class Room extends React.Component {
 									 {title: "Log out", func: this.props.logoutUser}]}/>
 
 			<section className="bg-purple" style={{height: '92vh'}}>
-				<div className="container-fluid py-3 h-100">
-					<div className="row h-100">
+				<div className="container-fluid d-flex flex-row py-3 h-100">
+					<div className="col-lg-4 d-flex flex-column h-100">
 						<Search socket={this.state.socket}/>
+					</div>
 
-						<div className="col-lg-4 h-100">
-								<RoomCode/>
-								<Song data={temp}/>
-						</div>
+					<div className="col-lg-4 d-flex flex-column h-100">
+						<RoomCode/>
+						<Player socket={this.state.socket}/>
+					</div>
 
-						<div className="col-lg-4">
-								<CurrentListeners/>
-						</div>
+					<div className="col-lg-4 d-flex flex-column h-100">
+						<Search socket={this.state.socket}/>
 					</div>
 				</div>
 			</section>
-
 			</>
 		);
 	}

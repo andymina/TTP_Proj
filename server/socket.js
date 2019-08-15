@@ -45,6 +45,11 @@ module.exports = (io) => {
 			socket.emit('queue-success', room.queue);
 		});
 
+		socket.on('update-status', (status) => {
+			// play the goddamn playlist
+			console.log(status);
+		})
+
 		socket.on('disconnect', () => {
 			let room = roomHandler.getRoom(socket.room_code);
 			room.leave(socket.user);

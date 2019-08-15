@@ -1,4 +1,4 @@
-import { UPDATE_ROOM, UPDATE_SONG, UPDATE_MASTER, UPDATE_QUEUE } from './types';
+import { UPDATE_ROOM, UPDATE_SONG, UPDATE_MASTER, UPDATE_QUEUE, UPDATE_STATUS } from './types';
 
 export const updateRoom = (room) => (dispatch) => {
 	dispatch({
@@ -11,6 +11,13 @@ export const updateSong = (song) => (dispatch) => {
 	dispatch({
 		type: UPDATE_SONG,
 		payload: song
+	});
+}
+
+export const updateStatus = (status) => (dispatch) => {
+	dispatch({
+		type: UPDATE_STATUS,
+		payload: status
 	});
 }
 
