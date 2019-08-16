@@ -9,7 +9,7 @@ const CurrentListeners = (props) => {
 	});
 
 	return (
-		<div>
+		<div className="d-flex flex-column">
 			<p className="lead text-center my-0 text-white" style={{fontWeight: 5, fontSize: '1.5em'}}>Current listeners:</p>
 			<hr className="divider my-2"/>
 			{users}

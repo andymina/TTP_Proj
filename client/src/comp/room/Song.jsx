@@ -3,7 +3,7 @@ import Marquee from 'react-marquee';
 import './Room.css';
 
 const Song = (props) => (
-	<div className="col-lg-12 song-container py-2 px-1">
+	<div className="col-lg-12 song-container p-2">
 		<img
 			src={props.data.album_pic_url}
 			width={75}

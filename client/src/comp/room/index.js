@@ -8,9 +8,11 @@ import Player from './Player';
 import ButtonGroup from './ButtonGroup';
 import CurrentListeners from './CurrentListeners';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logoutUser, updateUser } from '../../actions/authActions';
 import { updateRoom } from '../../actions/roomActions';
+import isEmpty from 'is-empty';
 import axios from 'axios';
 import io from 'socket.io-client';
 import './Room.css';
@@ -18,7 +20,7 @@ import './Room.css';
 class Room extends React.Component {
 	constructor(props){
 		super(props);
-		this.state = { loading: true, socket: {} };
+		this.state = { loading: true, socket: {}, error: false };
 	}
 
 	componentDidMount(){
@@ -27,7 +29,7 @@ class Room extends React.Component {
 
 	handleJoin = async () => {
 		// Change IP with WiFi
-		const socket = io("192.168.1.40:5000");
+		const socket = io("146.95.38.175:5000");
 		const { room_code } = this.props.match.params;
 
 		socket.emit('join-room', this.props.user, room_code);
@@ -37,28 +39,37 @@ class Room extends React.Component {
 		});
 		socket.on('join-error', () => {
 			console.log("Error joining the room");
+			this.setState({ loading: false, error: true });
 		});
 	}
 
 	componentWillUnmount(){
-		this.state.socket.disconnect();
+		if (!isEmpty(this.state.socket))
+			this.state.socket.disconnect();
 	}
 
 	render(){
-		if (this.state.loading) return <Loading/>;
+		if (this.state.loading)
+			return <Loading/>;
+		if (this.state.error)
+			return (
+				<section className="bg-purple" style={{height: '100vh'}}>
+					<div className="container-fluid h-100">
+						<div className="row h-100">
+							<div className="col-lg-12 my-auto text-center">
+								<h1 className="display-4 lead text-red my-4">Room not found</h1>
+								<Link to="/dashboard" className="btn dashboard-button d-inline-block">
+									Back to Dashboard
+								</Link>
+							</div>
+						</div>
+					</div>
+				</section>
+			);
 
-		this.state.socket.on('update-room', (room) => {
-			this.props.updateRoom(room);
-		});
-
-		let temp = {
-			title: "Buttercup",
-			artist: "Jack Stauber",
-			album: "Pop Food",
-			length: 2039402,
-			album_pic_url: "https://via.placeholder.com/250x250",
-			uri: "some.uri"
-		};
+			this.state.socket.on('update-room', (room) => {
+				this.props.updateRoom(room);
+			});
 
 		return (
 			<>
@@ -78,7 +89,8 @@ class Room extends React.Component {
 					</div>
 
 					<div className="col-lg-4 d-flex flex-column h-100">
-						<Search socket={this.state.socket}/>
+						<CurrentListeners/>
+						{this.props.room.queue.length > 0 ? <Queue/> : null}
 					</div>
 				</div>
 			</section>

@@ -13,8 +13,9 @@ class Room {
 		this.song = {};
 		this.playlist = {};
 		this.master = {};
-		this.max = 4;
 		this.is_playing = false;
+		this.max = 4;
+		this.progress_ms = 0;
 	}
 
 	initMaster(user){
@@ -38,8 +39,6 @@ class Room {
 			this.playlist.owner = this.master;
 			this.playlist.id = response.data.id;
 			this.playlist.uri = response.data.uri;
-			// Playlist object
-			console.log(response.data);
 		}).catch((err) => {
 			console.log(err);
 		});
@@ -85,7 +84,7 @@ class Room {
 	}
 
 	// Handle enqueue
-	enqueue(user, song){
+	async enqueue(user, song){
 		const url = `https://api.spotify.com/v1/playlists/${this.playlist.id}/tracks`;
 		const params = {
 			uris: [song.uri]
@@ -97,11 +96,12 @@ class Room {
 			}
 		};
 
-		axios.post(url, params, header).then(() => {
-			this.queue.push(song)
-		}).catch((err) => {
+		try {
+			await axios.post(url, params, header);
+			this.queue.push(song);
+		} catch(err) {
 			console.log(err);
-		});
+		}
 	}
 
 	// Handle dequeue
@@ -109,7 +109,8 @@ class Room {
 		return this.queue.shift();
 	}
 
-	async play(song){
+	async play(){
+		this.song = this.dequeue();
 		const url = "https://api.spotify.com/v1/me/player/play";
 		const params = { context_uri: this.playlist.uri };
 		const header = {
@@ -121,7 +122,45 @@ class Room {
 		try {
 			await axios.put(url, params, header);
 			this.is_playing = true;
-			this.song = song;
+			return true;
+		} catch(err) {
+			console.log(err);
+			return false;
+		}
+	}
+
+	// Returns true if the operation was successful
+	async pause(){
+		const url = "https://api.spotify.com/v1/me/player/pause";
+		const params = {};
+		const header = {
+			headers: {
+				'Authorization': 'Bearer ' + this.master.spotify_access_token
+			}
+		};
+
+		try {
+			await axios.put(url, params, header);
+			this.is_playing = false;
+			return true;
+		} catch(err) {
+			console.log(err);
+			return false;
+		}
+	}
+
+	async resume(){
+		const url = "https://api.spotify.com/v1/me/player/play";
+		const params = {};
+		const header = {
+			headers: {
+				'Authorization': 'Bearer ' + this.master.spotify_access_token
+			}
+		};
+
+		try {
+			await axios.put(url, params, header);
+			this.is_playing = true;
 			return true;
 		} catch(err) {
 			console.log(err);
@@ -141,7 +180,6 @@ class Room {
 			console.log(err);
 		});
 	}
-
 	// Functions to implement
 	// promote(user) - promotes the user passed to music master
 }

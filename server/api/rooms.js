@@ -15,11 +15,4 @@ router.post("/create", (req, res) => {
 	return res.status(200).json(room_code);
 });
 
-router.post("/join/:room_code", (req, res) => {
-	// Get the data code that was passed
-	const { room_code } = req.body;
-	if (roomHandler.isValidCode(room_code)) return res.status(200).json({ isValid: true, error: "" });
-	else return res.status(500).json({ isValid: false, error: "That room wasn't found. Please enter a valid room code and try again." })
-});
-
 module.exports = router;

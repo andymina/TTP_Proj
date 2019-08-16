@@ -1,4 +1,4 @@
-import { UPDATE_ROOM, UPDATE_SONG, UPDATE_MASTER, UPDATE_QUEUE, QUEUE_SONG } from '../actions/types';
+import { UPDATE_ROOM, UPDATE_SONG, UPDATE_MASTER, UPDATE_QUEUE, QUEUE_SONG, UPDATE_STATUS } from '../actions/types';
 
 const initialState = {
 	song: {},
@@ -8,6 +8,7 @@ const initialState = {
 	queue: [],
 	room_code: "",
 	is_playing: false,
+	progress_ms: 0
 };
 
 export default function(state = initialState, action) {
@@ -40,6 +41,12 @@ export default function(state = initialState, action) {
 			return {
 				...state,
 				queue: action.payload
+			}
+
+		case UPDATE_STATUS:
+			return {
+				...state,
+				is_playing: action.payload
 			}
 
 		default:

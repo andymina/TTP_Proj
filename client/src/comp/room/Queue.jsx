@@ -4,32 +4,25 @@ import Song from './Song';
 import { connect } from 'react-redux';
 
 const Queue = (props) => {
-	let temp = {
-		title: "Buttercup",
-		artist: "Jack Stauber",
-		album: "Pop Food",
-		length: 2039402,
-		album_pic_url: "https://via.placeholder.com/250x250",
-		uri: "some.uri"
-	};
+	let counter = 0;
+	let tracks = props.queue.map((element) => {
+		counter++;
+		return <Song key={element.uri + counter} data={element}/>
+	});
 
 	return (
-		<div className="col-lg-12 mx-auto my-2">
-			<h1 className="text-left text-red heading lead">Queue</h1>
-			<div className="queue-container my-1">
-				<Song data={temp}/>
-				<Song data={temp}/>
-				<Song data={temp}/>
-				<Song data={temp}/>
-				<Song data={temp}/>
-				<Song data={temp}/>
-				<Song data={temp}/>
-				<Song data={temp}/>
+		<div className="d-flex queue-container flex-column">
+			<div>
+				<h1 className="text-left text-red heading lead">Queue</h1>
+			</div>
+
+			<div className="queue-song-container my-1">
+				{tracks}
 			</div>
 		</div>
 	);
 }
 
 Queue.propTypes = { queue: PropTypes.array.isRequired };
-const mapStateToProps = (state) => ({ queue: state.room.queue, song: state.room.song });
+const mapStateToProps = (state) => ({ queue: state.room.queue });
 export default connect(mapStateToProps)(Queue);

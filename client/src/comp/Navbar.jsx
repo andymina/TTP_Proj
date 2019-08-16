@@ -28,7 +28,7 @@ const Navbar = (props) => {
 	return (
 		<nav className="navbar navbar-expand-lg bg-red">
 			<div className="container-fluid">
-				<Link to="" className="navbar-brand">
+				<Link to="/" className="navbar-brand">
 					<img
 						src="https://via.placeholder.com/30x30"
 						className="d-inline-block align-top mx-2"

@@ -7,6 +7,15 @@
 	overflow-y: auto;
 }
 
+.queue-container {
+	min-height: 30%;
+	max-height: 50%;
+}
+
+.queue-song-container {
+	overflow-y: scroll;
+}
+
 .user-container {
 	display: flex;
 	flex-direction: row;
